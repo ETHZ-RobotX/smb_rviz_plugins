@@ -1,22 +1,30 @@
 #include <smb_battery/smb_battery_panel.hpp>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <iostream>
 
 namespace smb_rviz_plugins{
 
-BatteryPanel::BatteryPanel(QWidget *parent)
+BatteryPanel::BatteryPanel(QString name, QWidget *parent)
     :QWidget(parent){
 
-    QHBoxLayout* layout = new QHBoxLayout();
+    QVBoxLayout* layout = new QVBoxLayout;
+    battery_name_= new QLabel(name);
+    battery_name_->setStyleSheet("font-weight: bold");
+    layout->addWidget(battery_name_);
+
+    QHBoxLayout* layout_indicator = new QHBoxLayout;
 
     battery_icon_ = new QLabel();
     setIcon(":/battery/battery_warning.svg");
-    layout->addWidget(battery_icon_);
+    layout_indicator->addWidget(battery_icon_);
 
     battery_text_ = new QLabel("No Data");
-    layout->addWidget(battery_text_);
+    layout_indicator->addWidget(battery_text_);
 
-    layout->addStretch();
+    layout_indicator->addStretch();
+
+    layout->addLayout(layout_indicator);
 
     setLayout(layout);
 }

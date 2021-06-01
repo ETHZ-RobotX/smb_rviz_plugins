@@ -1,16 +1,27 @@
 #include "smb_battery/smb_battery_display.hpp"
 #include <pluginlib/class_list_macros.h>
 #include <QHBoxLayout>
+
 namespace smb_rviz_plugins {
 using namespace rviz;
 
 SMBBatteryDisplay::SMBBatteryDisplay(){
 
-    // TODO: add sensor type
+    visual_category_  = new rviz::Property("Visualize", QVariant(), "", this);
+
     battery_topic_ = new rviz::RosTopicProperty("Topic Battery", "",
                                             QString::fromStdString(ros::message_traits::datatype<sensor_msgs::BatteryState>()),
                                             "sensor_msgs::BatteryState topic to subscribe to.",
                                             this, SLOT(updateTopic()));
+
+    visual_battery_1_ = new rviz::BoolProperty("Show Battery 1", true, "Set visibility of Battery 1",
+                                            visual_category_, SLOT(changeVisibility()),this);
+
+    visual_battery_2_ = new rviz::BoolProperty("Show Battery 2", true, "Set visibility of Battery 2",
+                                            visual_category_, SLOT(changeVisibility()),this);
+
+    visual_battery_3_ = new rviz::BoolProperty("Show Battery 3", true, "Set visibility of Battery 3",
+                                            visual_category_, SLOT(changeVisibility()),this);                                    
 
 }
 
@@ -24,9 +35,9 @@ void SMBBatteryDisplay::onInitialize(){
     auto layout = new QHBoxLayout;
     
     // Add 3 battery widgets for the 3 batteries
-    battery_1_panel_ = new BatteryPanel(parent);
-    battery_2_panel_ = new BatteryPanel(parent);
-    battery_3_panel_ = new BatteryPanel(parent);
+    battery_1_panel_ = new BatteryPanel("Battery 1");
+    battery_2_panel_ = new BatteryPanel("Battery 2");
+    battery_3_panel_ = new BatteryPanel("Battery 3");
     
     // Add to the layout
     layout->addWidget(battery_1_panel_);
@@ -44,6 +55,14 @@ void SMBBatteryDisplay::onEnable(){
 
 void SMBBatteryDisplay::onDisable(){
     unsubscribe();
+}
+
+void SMBBatteryDisplay::changeVisibility(){
+
+    battery_1_panel_->setVisible(visual_battery_1_->getBool());
+    battery_2_panel_->setVisible(visual_battery_2_->getBool());
+    battery_3_panel_->setVisible(visual_battery_3_->getBool());
+
 }
 
 void SMBBatteryDisplay::updateTopic(){

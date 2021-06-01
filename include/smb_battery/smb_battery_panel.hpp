@@ -10,7 +10,8 @@ class BatteryPanel : public QWidget{
     Q_OBJECT
 
     public:
-        BatteryPanel(QWidget *parent = nullptr);
+        BatteryPanel(QString name, QWidget *parent = nullptr);
+        
 
         enum class BatteryStatus {
             Unknown,
@@ -32,6 +33,7 @@ class BatteryPanel : public QWidget{
         double percentage_{0.0};
         double voltage_{0.0};
 
+        QLabel* battery_name_;
         QLabel* battery_icon_;
         QLabel* battery_text_;
 };

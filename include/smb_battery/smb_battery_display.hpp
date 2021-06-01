@@ -4,6 +4,8 @@
 #include <ros/ros.h>
 #include <rviz/display.h>
 #include <rviz/properties/status_property.h>
+#include <rviz/properties/bool_property.h>
+#include <rviz/properties/property.h>
 #include <rviz/properties/ros_topic_property.h>
 #include <sensor_msgs/BatteryState.h>
 
@@ -24,9 +26,11 @@ class SMBBatteryDisplay : public rviz::Display {
         void onInitialize() override;
         void onEnable() override;
         void onDisable() override;
-    
-    protected Q_SLOTS:
+
+    private Q_SLOTS:
         void updateTopic();
+        void changeVisibility();
+        
 
     private:
         void subscribe();
@@ -34,6 +38,12 @@ class SMBBatteryDisplay : public rviz::Display {
         void batteryMsgCallback(const sensor_msgs::BatteryStateConstPtr &msg);
 
         rviz::RosTopicProperty* battery_topic_;
+
+        rviz::BoolProperty* visual_battery_1_;
+        rviz::BoolProperty* visual_battery_2_;
+        rviz::BoolProperty* visual_battery_3_;
+
+        rviz::Property* visual_category_;
         
         ros::Subscriber battery_subscriber_;
         
