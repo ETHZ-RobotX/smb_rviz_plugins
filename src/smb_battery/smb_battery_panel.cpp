@@ -4,7 +4,8 @@
 
 namespace smb_rviz_plugins{
 
-BatteryPanel::BatteryPanel(QWidget *parent){
+BatteryPanel::BatteryPanel(QWidget *parent)
+    :QWidget(parent){
 
     QHBoxLayout* layout = new QHBoxLayout();
 

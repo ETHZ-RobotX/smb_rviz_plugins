@@ -33,11 +33,13 @@ class SMBBatteryDisplay : public rviz::Display {
         void unsubscribe();
         void batteryMsgCallback(const sensor_msgs::BatteryStateConstPtr &msg);
 
-        rviz::RosTopicProperty* topic_property_;
-        rviz::RosTopicProperty* topic_property_2;
+        rviz::RosTopicProperty* battery_topic_;
+        
         ros::Subscriber battery_subscriber_;
         
-        BatteryPanel* battery_panel_{nullptr};
+        BatteryPanel* battery_1_panel_{nullptr};
+        BatteryPanel* battery_2_panel_{nullptr};
+        BatteryPanel* battery_3_panel_{nullptr};
 };
 
 
