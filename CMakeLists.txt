@@ -38,14 +38,16 @@ add_definitions(-DQT_NO_KEYWORDS)
 ## Here we specify the list of source files.
 ## The generated MOC files are included automatically as headers.
 set(SRC_FILES
-  src/smb_battery/smb_battery_display.cpp
-  src/smb_battery/smb_battery_panel.cpp
+  src/smb_battery_motor/smb_batt_mot_display.cpp
+  src/smb_battery_payload/smb_batt_pay_display.cpp
+  src/smb_battery_payload/smb_batt_panel.cpp
   src/smb_control/smb_control_panel.cpp
 )
 
 set(HDR_FILES
-  include/smb_battery/smb_battery_display.hpp
-  include/smb_battery/smb_battery_panel.hpp
+  include/smb_battery_motor/smb_batt_mot_display.hpp
+  include/smb_battery_payload/smb_batt_pay_display.hpp
+  include/smb_battery_payload/smb_batt_panel.hpp
   include/smb_control/smb_control_panel.hpp
 )
 

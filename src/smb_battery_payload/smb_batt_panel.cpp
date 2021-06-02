@@ -1,4 +1,4 @@
-#include <smb_battery/smb_battery_panel.hpp>
+#include <smb_battery_payload/smb_batt_panel.hpp>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <iostream>

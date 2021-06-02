@@ -1,4 +1,4 @@
-#include "smb_battery/smb_battery_display.hpp"
+#include "smb_battery_payload/smb_batt_pay_display.hpp"
 #include <pluginlib/class_list_macros.h>
 #include <QHBoxLayout>
 
@@ -112,7 +112,7 @@ void SMBBatteryDisplay::batteryMsgCallback(const sensor_msgs::BatteryStateConstP
     }else if (msg->location == "Battery 2")
     {
         battery_panel = battery_2_panel_;
-    }else if (msg->location == "Battery 3")
+    }else if (msg->location == "ACDC Connector")
     {
         battery_panel = battery_3_panel_;
     }else{

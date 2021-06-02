@@ -1,6 +1,6 @@
 
 <library path="lib/libsmb_rviz_plugins">
-  <class name="smb_rviz_plugins/SMBBattery"
+  <class name="smb_rviz_plugins/SMBBatteryPayload"
          type="smb_rviz_plugins::SMBBatteryDisplay"
          base_class_type="rviz::Display">
     <description>
@@ -8,11 +8,19 @@
     </description>
     <message_type>sensor_msgs/BatteryState</message_type>
   </class>
-    <class name="smb_rviz_plugins/SMBControl"
+  <class name="smb_rviz_plugins/SMBControl"
          type="smb_rviz_plugins::SMBControlPanel"
          base_class_type="rviz::Panel">
     <description>
       Control the SMB.
     </description>
+  </class>
+  <class name="smb_rviz_plugins/SMBBatteryMotor"
+         type="smb_rviz_plugins::SMBBattMotDisplay"
+         base_class_type="rviz::Display">
+    <description>
+      Display battery charge of the SMB.
+    </description>
+    <message_type>sensor_msgs/BatteryState</message_type>
   </class>
 </library>
