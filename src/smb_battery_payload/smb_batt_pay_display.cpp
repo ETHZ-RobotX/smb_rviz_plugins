@@ -10,8 +10,8 @@ SMBBatteryDisplay::SMBBatteryDisplay(){
     visual_category_  = new rviz::Property("Visualize", QVariant(), "", this);
 
     battery_topic_ = new rviz::RosTopicProperty("Topic Battery", "",
-                                            QString::fromStdString(ros::message_traits::datatype<smb_battery_msgs::SMBPower>()),
-                                            "smb_battery_msgs::SMBPower topic to subscribe to.",
+                                            QString::fromStdString(ros::message_traits::datatype<smb_rviz_plugins::SMBPower>()),
+                                            "smb_rviz_plugins::SMBPower topic to subscribe to.",
                                             this, SLOT(updateTopic()));
 
     visual_battery_1_ = new rviz::BoolProperty("Show Battery 1", true, "Set visibility of Battery 1",
@@ -104,7 +104,7 @@ void SMBBatteryDisplay::unsubscribe(){
     battery_subscriber_.shutdown();
 }
 
-void SMBBatteryDisplay::batteryMsgCallback(const smb_battery_msgs::SMBPowerConstPtr &msg){
+void SMBBatteryDisplay::batteryMsgCallback(const smb_rviz_plugins::SMBPowerConstPtr &msg){
 
     battery_1_panel_->setPercentage(msg->battery_1.percentage);
     battery_1_panel_->setVoltage(msg->battery_1.voltage);

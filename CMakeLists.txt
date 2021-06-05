@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(smb_rviz_plugins)
-find_package(catkin REQUIRED COMPONENTS rviz sensor_msgs smb_battery_msgs)
-catkin_package()
+find_package(catkin REQUIRED COMPONENTS 
+  rviz 
+  sensor_msgs 
+  std_msgs
+  message_generation
+)
+
 include_directories(
 include
 ${catkin_INCLUDE_DIRS}
@@ -43,6 +48,23 @@ add_library(
   ${HDR_FILES}
   resources/resources.qrc
 )
+
+# Messages
+add_message_files(
+  FILES
+  SMBPower.msg
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  sensor_msgs
+)
+
+catkin_package(
+  CATKIN_DEPENDS message_runtime
+)
+
 
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${catkin_LIBRARIES})
