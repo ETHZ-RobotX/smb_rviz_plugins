@@ -10,8 +10,8 @@ SMBBatteryDisplay::SMBBatteryDisplay(){
     visual_category_  = new rviz::Property("Visualize", QVariant(), "", this);
 
     battery_topic_ = new rviz::RosTopicProperty("Topic Battery", "",
-                                            QString::fromStdString(ros::message_traits::datatype<sensor_msgs::BatteryState>()),
-                                            "sensor_msgs::BatteryState topic to subscribe to.",
+                                            QString::fromStdString(ros::message_traits::datatype<smb_battery_msgs::SMBPower>()),
+                                            "smb_battery_msgs::SMBPower topic to subscribe to.",
                                             this, SLOT(updateTopic()));
 
     visual_battery_1_ = new rviz::BoolProperty("Show Battery 1", true, "Set visibility of Battery 1",
@@ -104,40 +104,51 @@ void SMBBatteryDisplay::unsubscribe(){
     battery_subscriber_.shutdown();
 }
 
-void SMBBatteryDisplay::batteryMsgCallback(const sensor_msgs::BatteryStateConstPtr &msg){
-    BatteryPanel * battery_panel = nullptr;
-    if(msg->location == "Battery 1")
-    {
-        battery_panel = battery_1_panel_;
-    }else if (msg->location == "Battery 2")
-    {
-        battery_panel = battery_2_panel_;
-    }else if (msg->location == "ACDC Connector")
-    {
-        battery_panel = battery_3_panel_;
+void SMBBatteryDisplay::batteryMsgCallback(const smb_battery_msgs::SMBPowerConstPtr &msg){
+
+    battery_1_panel_->setPercentage(msg->battery_1.percentage);
+    battery_1_panel_->setVoltage(msg->battery_1.voltage);
+    if(!msg->battery_1.present){
+        battery_1_panel_->setBatteryStatus(BatteryPanel::BatteryStatus::Missing);
     }else{
-        return;
-    }
-    
-    battery_panel->setPercentage(msg->percentage);
-    battery_panel->setVoltage(msg->voltage);
-    if(!msg->present){
-        battery_panel->setBatteryStatus(BatteryPanel::BatteryStatus::Missing);
-    }else{
-        switch (msg->power_supply_status)
+        switch (msg->battery_1.power_supply_status)
         {
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_CHARGING:
-                battery_panel->setBatteryStatus(
+                battery_1_panel_->setBatteryStatus(
                     BatteryPanel::BatteryStatus::Charging);
                 break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_DISCHARGING:
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_FULL:
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_NOT_CHARGING:
-                battery_panel->setBatteryStatus(
+                battery_1_panel_->setBatteryStatus(
                     BatteryPanel::BatteryStatus::Discharging);
                 break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_UNKNOWN:
-                battery_panel->setBatteryStatus(
+                battery_1_panel_->setBatteryStatus(
+                    BatteryPanel::BatteryStatus::Unknown);
+                break;
+        }
+    }
+
+    battery_2_panel_->setPercentage(msg->battery_2.percentage);
+    battery_2_panel_->setVoltage(msg->battery_2.voltage);
+    if(!msg->battery_2.present){
+        battery_2_panel_->setBatteryStatus(BatteryPanel::BatteryStatus::Missing);
+    }else{
+        switch (msg->battery_2.power_supply_status)
+        {
+            case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_CHARGING:
+                battery_2_panel_->setBatteryStatus(
+                    BatteryPanel::BatteryStatus::Charging);
+                break;
+            case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_DISCHARGING:
+            case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_FULL:
+            case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_NOT_CHARGING:
+                battery_2_panel_->setBatteryStatus(
+                    BatteryPanel::BatteryStatus::Discharging);
+                break;
+            case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_UNKNOWN:
+                battery_2_panel_->setBatteryStatus(
                     BatteryPanel::BatteryStatus::Unknown);
                 break;
         }

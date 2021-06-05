@@ -5,7 +5,7 @@
 ## First start with some standard catkin stuff.
 cmake_minimum_required(VERSION 3.0.2)
 project(smb_rviz_plugins)
-find_package(catkin REQUIRED COMPONENTS rviz sensor_msgs)
+find_package(catkin REQUIRED COMPONENTS rviz sensor_msgs smb_battery_msgs)
 catkin_package()
 include_directories(
 include
