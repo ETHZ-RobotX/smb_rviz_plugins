@@ -24,6 +24,7 @@ class BatteryPanel : public QWidget{
         void setBatteryStatus(BatteryStatus status);
         void setPercentage(double percentage);
         void setVoltage(double voltage);
+        void setInUse(bool in_use);
 
     private:
         void setIcon(const QString &path);

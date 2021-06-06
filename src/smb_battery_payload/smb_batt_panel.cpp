@@ -1,6 +1,8 @@
 #include <smb_battery_payload/smb_batt_panel.hpp>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QPainter>
+#include <QPen>
 #include <iostream>
 
 namespace smb_rviz_plugins{
@@ -50,6 +52,22 @@ void BatteryPanel::setIcon(const QString &path){
     auto icon_width = font_metrics.averageCharWidth() * 6;
     auto icon_height = font_metrics.height()*2;
     battery_icon_->setPixmap(pixmap.scaled(icon_width, icon_height, Qt::KeepAspectRatio));
+}
+
+void BatteryPanel::setInUse(bool in_use){
+    auto pixmap = battery_icon_->pixmap()->toImage();
+    QPainter painter(&pixmap);
+    QPen pen;
+    if(in_use){
+        pen.setColor(Qt::green);
+    }else{
+        pen.setColor(Qt::red);
+    }
+    pen.setWidth(15);
+    painter.setPen(pen);
+    painter.drawPoint(5,5);
+    painter.end();
+    battery_icon_->setPixmap(QPixmap::fromImage(pixmap));
 }
 
 void BatteryPanel::updateWidgets(){

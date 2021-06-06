@@ -5,12 +5,10 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs 
   std_msgs
   message_generation
+  roscpp
+  rospy
 )
 
-include_directories(
-include
-${catkin_INCLUDE_DIRS}
-)
 link_directories( ${catkin_LIBRARY_DIRS})
 
 set(CMAKE_AUTOMOC ON)
@@ -28,27 +26,6 @@ endif()
 
 add_definitions(-DQT_NO_KEYWORDS)
 
-set(SRC_FILES
-  src/smb_battery_motor/smb_batt_mot_display.cpp
-  src/smb_battery_payload/smb_batt_pay_display.cpp
-  src/smb_battery_payload/smb_batt_panel.cpp
-  src/smb_control/smb_control_panel.cpp
-)
-
-set(HDR_FILES
-  include/smb_battery_motor/smb_batt_mot_display.hpp
-  include/smb_battery_payload/smb_batt_pay_display.hpp
-  include/smb_battery_payload/smb_batt_panel.hpp
-  include/smb_control/smb_control_panel.hpp
-)
-
-add_library(
-  ${PROJECT_NAME} 
-  ${SRC_FILES} 
-  ${HDR_FILES}
-  resources/resources.qrc
-)
-
 # Messages
 add_message_files(
   FILES
@@ -65,9 +42,36 @@ catkin_package(
   CATKIN_DEPENDS message_runtime
 )
 
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
+)
 
+set(SRC_FILES
+  src/smb_battery_motor/smb_batt_mot_display.cpp
+  src/smb_battery_payload/smb_batt_pay_display.cpp
+  src/smb_battery_payload/smb_batt_panel.cpp
+  src/smb_control/smb_control_panel.cpp
+)
+
+set(HDR_FILES
+  include/smb_battery_motor/smb_batt_mot_display.hpp
+  include/smb_battery_payload/smb_batt_pay_display.hpp
+  include/smb_battery_payload/smb_batt_panel.hpp
+  include/smb_control/smb_control_panel.hpp
+)
+
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+
+add_library(
+  ${PROJECT_NAME} 
+  ${SRC_FILES} 
+  ${HDR_FILES}
+  resources/resources.qrc
+)
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${catkin_LIBRARIES})
+
 
 install(TARGETS
   ${PROJECT_NAME}
