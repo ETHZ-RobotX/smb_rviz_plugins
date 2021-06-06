@@ -17,7 +17,8 @@ class BatteryPanel : public QWidget{
             Unknown,
             Charging,
             Discharging,
-            Missing
+            Missing,
+            NotCharging
         };
         Q_ENUM(BatteryStatus);
 

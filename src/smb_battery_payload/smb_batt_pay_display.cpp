@@ -106,11 +106,12 @@ void SMBBatteryDisplay::unsubscribe(){
 
 void SMBBatteryDisplay::batteryMsgCallback(const smb_rviz_plugins::SMBPowerConstPtr &msg){
 
-    battery_1_panel_->setPercentage(msg->battery_1.percentage);
-    battery_1_panel_->setVoltage(msg->battery_1.voltage);
+    battery_1_panel_->setEnabled(msg->battery_1.present);
     if(!msg->battery_1.present){
         battery_1_panel_->setBatteryStatus(BatteryPanel::BatteryStatus::Missing);
     }else{
+        battery_1_panel_->setPercentage(msg->battery_1.percentage);
+        battery_1_panel_->setVoltage(msg->battery_1.voltage);
         switch (msg->battery_1.power_supply_status)
         {
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_CHARGING:
@@ -118,10 +119,13 @@ void SMBBatteryDisplay::batteryMsgCallback(const smb_rviz_plugins::SMBPowerConst
                     BatteryPanel::BatteryStatus::Charging);
                 break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_DISCHARGING:
+                battery_1_panel_->setBatteryStatus(
+                    BatteryPanel::BatteryStatus::Discharging);
+                break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_FULL:
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_NOT_CHARGING:
                 battery_1_panel_->setBatteryStatus(
-                    BatteryPanel::BatteryStatus::Discharging);
+                    BatteryPanel::BatteryStatus::NotCharging);
                 break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_UNKNOWN:
                 battery_1_panel_->setBatteryStatus(
@@ -130,11 +134,12 @@ void SMBBatteryDisplay::batteryMsgCallback(const smb_rviz_plugins::SMBPowerConst
         }
     }
 
-    battery_2_panel_->setPercentage(msg->battery_2.percentage);
-    battery_2_panel_->setVoltage(msg->battery_2.voltage);
+    battery_2_panel_->setEnabled(msg->battery_2.present);
     if(!msg->battery_2.present){
         battery_2_panel_->setBatteryStatus(BatteryPanel::BatteryStatus::Missing);
     }else{
+        battery_2_panel_->setPercentage(msg->battery_2.percentage);
+        battery_2_panel_->setVoltage(msg->battery_2.voltage);
         switch (msg->battery_2.power_supply_status)
         {
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_CHARGING:
@@ -142,10 +147,13 @@ void SMBBatteryDisplay::batteryMsgCallback(const smb_rviz_plugins::SMBPowerConst
                     BatteryPanel::BatteryStatus::Charging);
                 break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_DISCHARGING:
+                battery_2_panel_->setBatteryStatus(
+                    BatteryPanel::BatteryStatus::Discharging);
+                break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_FULL:
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_NOT_CHARGING:
                 battery_2_panel_->setBatteryStatus(
-                    BatteryPanel::BatteryStatus::Discharging);
+                    BatteryPanel::BatteryStatus::NotCharging);
                 break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_UNKNOWN:
                 battery_2_panel_->setBatteryStatus(

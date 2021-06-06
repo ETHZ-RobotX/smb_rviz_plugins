@@ -72,16 +72,21 @@ void BatteryPanel::setInUse(bool in_use){
 
 void BatteryPanel::updateWidgets(){
     double percentage = percentage_ * 100;
+    bool battery_in_use = false;
     battery_text_->setText(QString("%1% (%2 V)").arg(percentage).arg(voltage_));
     switch(battery_status_)
     {
         case BatteryStatus::Unknown:
             setIcon(":/battery/battery_warning.svg");
+            setInUse(battery_in_use);
             break;
         case BatteryStatus::Charging:
             setIcon(":/battery/battery_charge.svg");
+            setInUse(battery_in_use);
             break;
         case BatteryStatus::Discharging:
+            battery_in_use = true;
+        case BatteryStatus::NotCharging:
             if(percentage_ < 0.1)
                 setIcon(":/battery/battery_0.svg");
             else if(percentage_ < 0.2)
@@ -102,9 +107,11 @@ void BatteryPanel::updateWidgets(){
                 setIcon(":/battery/battery_8.svg");
             else
                 setIcon(":/battery/battery_full.svg");
+            setInUse(battery_in_use);
             break;
         case BatteryStatus::Missing:
             setIcon(":/battery/battery_warning.svg");
+            setInUse(battery_in_use);
             break;
     }
 }
