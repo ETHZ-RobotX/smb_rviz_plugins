@@ -52,6 +52,7 @@ set(SRC_FILES
   src/smb_battery_payload/smb_batt_pay_display.cpp
   src/smb_battery_payload/smb_batt_panel.cpp
   src/smb_control/smb_control_panel.cpp
+  src/smb_battery_payload/smb_plug_pay_panel.cpp
 )
 
 set(HDR_FILES
@@ -59,6 +60,7 @@ set(HDR_FILES
   include/smb_battery_payload/smb_batt_pay_display.hpp
   include/smb_battery_payload/smb_batt_panel.hpp
   include/smb_control/smb_control_panel.hpp
+  include/smb_battery_payload/smb_plug_pay_panel.hpp
 )
 
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)

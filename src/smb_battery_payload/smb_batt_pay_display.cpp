@@ -20,7 +20,7 @@ SMBBatteryDisplay::SMBBatteryDisplay(){
     visual_battery_2_ = new rviz::BoolProperty("Show Battery 2", true, "Set visibility of Battery 2",
                                             visual_category_, SLOT(changeVisibility()),this);
 
-    visual_battery_3_ = new rviz::BoolProperty("Show Battery 3", true, "Set visibility of Battery 3",
+    visual_plug_ = new rviz::BoolProperty("Show Plug", true, "Set visibility of Plug",
                                             visual_category_, SLOT(changeVisibility()),this);                                    
 
 }
@@ -37,12 +37,12 @@ void SMBBatteryDisplay::onInitialize(){
     // Add 3 battery widgets for the 3 batteries
     battery_1_panel_ = new BatteryPanel("Battery 1");
     battery_2_panel_ = new BatteryPanel("Battery 2");
-    battery_3_panel_ = new BatteryPanel("Battery 3");
+    plug_panel_ = new PlugPanel("Plug");
     
     // Add to the layout
     layout->addWidget(battery_1_panel_);
     layout->addWidget(battery_2_panel_);
-    layout->addWidget(battery_3_panel_);
+    layout->addWidget(plug_panel_);
     parent->setLayout(layout);
     
     setAssociatedWidget(parent);
@@ -61,7 +61,7 @@ void SMBBatteryDisplay::changeVisibility(){
 
     battery_1_panel_->setVisible(visual_battery_1_->getBool());
     battery_2_panel_->setVisible(visual_battery_2_->getBool());
-    battery_3_panel_->setVisible(visual_battery_3_->getBool());
+    plug_panel_->setVisible(visual_plug_->getBool());
 
 }
 
@@ -160,6 +160,15 @@ void SMBBatteryDisplay::batteryMsgCallback(const smb_rviz_plugins::SMBPowerConst
                     BatteryPanel::BatteryStatus::Unknown);
                 break;
         }
+    }
+
+    plug_panel_->setEnabled(msg->power_supply_present);
+    if(!msg->power_supply_present){
+        plug_panel_->setVoltage(0);
+        plug_panel_->setInUse(false);
+    }else{
+        plug_panel_->setVoltage(msg->power_supply_voltage);
+        plug_panel_->setInUse(true);
     }
 
 }

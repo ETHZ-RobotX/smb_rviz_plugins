@@ -13,5 +13,6 @@
     <file>battery/battery_full.svg</file>
     <file>battery/battery_charge.svg</file>
     <file>battery/battery_warning.svg</file>
+    <file>battery/connector.svg</file>
 </qresource>
 </RCC>

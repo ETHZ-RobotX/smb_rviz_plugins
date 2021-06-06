@@ -7,10 +7,10 @@
 #include <rviz/properties/bool_property.h>
 #include <rviz/properties/property.h>
 #include <rviz/properties/ros_topic_property.h>
-#include <sensor_msgs/BatteryState.h>
 #include <smb_rviz_plugins/SMBPower.h>
 
 #include <smb_battery_payload/smb_batt_panel.hpp>
+#include "smb_battery_payload/smb_plug_pay_panel.hpp"
 
 namespace smb_rviz_plugins {
 
@@ -42,7 +42,7 @@ class SMBBatteryDisplay : public rviz::Display {
 
         rviz::BoolProperty* visual_battery_1_;
         rviz::BoolProperty* visual_battery_2_;
-        rviz::BoolProperty* visual_battery_3_;
+        rviz::BoolProperty* visual_plug_;
 
         rviz::Property* visual_category_;
         
@@ -50,7 +50,7 @@ class SMBBatteryDisplay : public rviz::Display {
         
         BatteryPanel* battery_1_panel_{nullptr};
         BatteryPanel* battery_2_panel_{nullptr};
-        BatteryPanel* battery_3_panel_{nullptr};
+        PlugPanel* plug_panel_{nullptr};
 };
 
 
