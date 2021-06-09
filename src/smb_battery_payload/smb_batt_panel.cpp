@@ -73,7 +73,7 @@ void BatteryPanel::setInUse(bool in_use){
 void BatteryPanel::updateWidgets(){
     double percentage = percentage_ * 100;
     bool battery_in_use = false;
-    battery_text_->setText(QString("%1% (%2 V)").arg(percentage).arg(QString::number(voltage_, 'f', 2)));
+    battery_text_->setText(QString("%1% (%2 V)").arg(QString::number(percentage, 'f', 2)).arg(QString::number(voltage_, 'f', 2)));
     switch(battery_status_)
     {
         case BatteryStatus::Unknown:
