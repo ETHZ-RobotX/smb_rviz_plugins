@@ -22,10 +22,17 @@ class BatteryPanel : public QWidget{
         };
         Q_ENUM(BatteryStatus);
 
+        enum class BatteryUsage {
+            inUse,
+            notInUse,
+            warning
+        };
+        Q_ENUM(BatteryUsage);
+
         void setBatteryStatus(BatteryStatus status);
         void setPercentage(double percentage);
         void setVoltage(double voltage);
-        void setInUse(bool in_use);
+        void setInUse(BatteryUsage usage);
 
     private:
         void setIcon(const QString &path);

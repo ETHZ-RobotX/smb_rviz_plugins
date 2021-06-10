@@ -54,12 +54,14 @@ void BatteryPanel::setIcon(const QString &path){
     battery_icon_->setPixmap(pixmap.scaled(icon_width, icon_height, Qt::KeepAspectRatio));
 }
 
-void BatteryPanel::setInUse(bool in_use){
+void BatteryPanel::setInUse(BatteryUsage usage){
     auto pixmap = battery_icon_->pixmap()->toImage();
     QPainter painter(&pixmap);
     QPen pen;
-    if(in_use){
+    if(usage == BatteryUsage::inUse){
         pen.setColor(Qt::green);
+    }else if(usage == BatteryUsage::warning){
+        pen.setColor("orange");
     }else{
         pen.setColor(Qt::red);
     }
@@ -72,20 +74,23 @@ void BatteryPanel::setInUse(bool in_use){
 
 void BatteryPanel::updateWidgets(){
     double percentage = percentage_ * 100;
-    bool battery_in_use = false;
+    BatteryUsage battery_usage = BatteryUsage::notInUse;
     battery_text_->setText(QString("%1% (%2 V)").arg(QString::number(percentage, 'f', 2)).arg(QString::number(voltage_, 'f', 2)));
     switch(battery_status_)
     {
         case BatteryStatus::Unknown:
             setIcon(":/battery/battery_warning.svg");
-            setInUse(battery_in_use);
+            setInUse(battery_usage);
             break;
         case BatteryStatus::Charging:
             setIcon(":/battery/battery_charge.svg");
-            setInUse(battery_in_use);
+            setInUse(battery_usage);
             break;
         case BatteryStatus::Discharging:
-            battery_in_use = true;
+            battery_usage = BatteryUsage::inUse;
+            if(voltage_ < 3.2 * 7){
+                battery_usage = BatteryUsage::warning;
+            }
         case BatteryStatus::NotCharging:
             if(percentage_ < 0.1)
                 setIcon(":/battery/battery_0.svg");
@@ -107,11 +112,11 @@ void BatteryPanel::updateWidgets(){
                 setIcon(":/battery/battery_8.svg");
             else
                 setIcon(":/battery/battery_full.svg");
-            setInUse(battery_in_use);
+            setInUse(battery_usage);
             break;
         case BatteryStatus::Missing:
             setIcon(":/battery/battery_warning.svg");
-            setInUse(battery_in_use);
+            setInUse(battery_usage);
             break;
     }
 }
