@@ -1,5 +1,5 @@
-#ifndef SMB_BATTERY_DISPLAY_HPP__
-#define SMB_BATTERY_DISPLAY_HPP__
+#ifndef SMB_POWER_PAYLOAD_DISPLAY_HPP__
+#define SMB_POWER_PAYLOAD_DISPLAY_HPP__
 
 #include <ros/ros.h>
 #include <rviz/display.h>
@@ -9,16 +9,16 @@
 #include <rviz/properties/ros_topic_property.h>
 #include <smb_powerstatus/SMBPowerStatus.h>
 
-#include <smb_battery_payload/smb_batt_panel.hpp>
-#include "smb_battery_payload/smb_plug_pay_panel.hpp"
+#include "smb_power_payload/smb_batt_pay_panel.hpp"
+#include "smb_power_payload/smb_plug_pay_panel.hpp"
 
 namespace smb_rviz_plugins {
 
-class SMBBatteryDisplay : public rviz::Display {
+class SMBPowerPayDisplay : public rviz::Display {
     Q_OBJECT
     public:
 
-        SMBBatteryDisplay();
+        SMBPowerPayDisplay();
 
         void setTopic( const QString& topic, const QString& datatype ) override;
     
@@ -48,8 +48,8 @@ class SMBBatteryDisplay : public rviz::Display {
         
         ros::Subscriber battery_subscriber_;
         
-        BatteryPanel* battery_1_panel_{nullptr};
-        BatteryPanel* battery_2_panel_{nullptr};
+        BatteryPayPanel* battery_1_panel_{nullptr};
+        BatteryPayPanel* battery_2_panel_{nullptr};
         PlugPanel* plug_panel_{nullptr};
 };
 

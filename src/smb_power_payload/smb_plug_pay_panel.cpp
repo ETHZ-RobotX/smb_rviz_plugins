@@ -1,4 +1,4 @@
-#include <smb_battery_payload/smb_plug_pay_panel.hpp>
+#include <smb_power_payload/smb_plug_pay_panel.hpp>
 #include <QVBoxLayout>
 #include <QPixmap>
 #include <QPen>

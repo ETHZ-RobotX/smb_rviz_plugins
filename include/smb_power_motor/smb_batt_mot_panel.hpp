@@ -1,16 +1,16 @@
-#ifndef SMB_BATTERY_PANEL_HPP__
-#define SMB_BATTERY_PANEL_HPP__
+#ifndef SMB_BATTERY_MOTOR_PANEL_HPP__
+#define SMB_BATTERY_MOTOR_PANEL_HPP__
 
 #include <QWidget>
 #include <QLabel>
 
 namespace smb_rviz_plugins {
 
-class BatteryPanel : public QWidget{
+class BatteryMotPanel : public QWidget{
     Q_OBJECT
 
     public:
-        BatteryPanel(QString name, QWidget *parent = nullptr);
+        BatteryMotPanel(QString name, QWidget *parent = nullptr);
         
 
         enum class BatteryStatus {
@@ -22,17 +22,9 @@ class BatteryPanel : public QWidget{
         };
         Q_ENUM(BatteryStatus);
 
-        enum class BatteryUsage {
-            inUse,
-            notInUse,
-            warning
-        };
-        Q_ENUM(BatteryUsage);
-
         void setBatteryStatus(BatteryStatus status);
         void setPercentage(double percentage);
         void setVoltage(double voltage);
-        void setInUse(BatteryUsage usage);
 
     private:
         void setIcon(const QString &path);
