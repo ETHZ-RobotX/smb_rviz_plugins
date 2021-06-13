@@ -1,42 +1,42 @@
-#include "smb_battery_payload/smb_batt_pay_display.hpp"
+#include "smb_power_payload/smb_pow_pay_display.hpp"
 #include <pluginlib/class_list_macros.h>
 #include <QHBoxLayout>
 
 namespace smb_rviz_plugins {
 using namespace rviz;
 
-SMBBatteryDisplay::SMBBatteryDisplay(){
+SMBPowerPayDisplay::SMBPowerPayDisplay(){
 
-    visual_category_  = new rviz::Property("Visualize", QVariant(), "", this);
+    visual_category_  = new rviz::Property("Show/Hide", QVariant(), "", this);
 
-    battery_topic_ = new rviz::RosTopicProperty("Topic Battery", "",
+    battery_topic_ = new rviz::RosTopicProperty("Topic Power Payload", "",
                                             QString::fromStdString(ros::message_traits::datatype<smb_powerstatus::SMBPowerStatus>()),
                                             "smb_powerstatus::SMBPowerStatus topic to subscribe to.",
                                             this, SLOT(updateTopic()));
 
-    visual_battery_1_ = new rviz::BoolProperty("Show Battery 1", true, "Set visibility of Battery 1",
+    visual_battery_1_ = new rviz::BoolProperty("Show Battery 1", true, "Show/Hide Battery 1",
                                             visual_category_, SLOT(changeVisibility()),this);
 
-    visual_battery_2_ = new rviz::BoolProperty("Show Battery 2", true, "Set visibility of Battery 2",
+    visual_battery_2_ = new rviz::BoolProperty("Show Battery 2", true, "Show/Hide Battery 2",
                                             visual_category_, SLOT(changeVisibility()),this);
 
-    visual_plug_ = new rviz::BoolProperty("Show Plug", true, "Set visibility of Plug",
+    visual_plug_ = new rviz::BoolProperty("Show Plug", true, "Show/Hide Plug",
                                             visual_category_, SLOT(changeVisibility()),this);                                    
 
 }
 
-void SMBBatteryDisplay::setTopic(const QString& topic, const QString& datatype){
+void SMBPowerPayDisplay::setTopic(const QString& topic, const QString& datatype){
     battery_topic_->setString(topic);
 }
 
-void SMBBatteryDisplay::onInitialize(){
+void SMBPowerPayDisplay::onInitialize(){
     // Create widget to add to rviz
     QWidget * parent = new QWidget;
     auto layout = new QHBoxLayout;
     
     // Add 3 battery widgets for the 3 batteries
-    battery_1_panel_ = new BatteryPanel("Battery 1");
-    battery_2_panel_ = new BatteryPanel("Battery 2");
+    battery_1_panel_ = new BatteryPayPanel("Battery 1");
+    battery_2_panel_ = new BatteryPayPanel("Battery 2");
     plug_panel_ = new PlugPanel("Plug");
     
     // Add to the layout
@@ -49,15 +49,15 @@ void SMBBatteryDisplay::onInitialize(){
 
 }
 
-void SMBBatteryDisplay::onEnable(){
+void SMBPowerPayDisplay::onEnable(){
     subscribe();
 }
 
-void SMBBatteryDisplay::onDisable(){
+void SMBPowerPayDisplay::onDisable(){
     unsubscribe();
 }
 
-void SMBBatteryDisplay::changeVisibility(){
+void SMBPowerPayDisplay::changeVisibility(){
 
     battery_1_panel_->setVisible(visual_battery_1_->getBool());
     battery_2_panel_->setVisible(visual_battery_2_->getBool());
@@ -65,13 +65,13 @@ void SMBBatteryDisplay::changeVisibility(){
 
 }
 
-void SMBBatteryDisplay::updateTopic(){
+void SMBPowerPayDisplay::updateTopic(){
     unsubscribe();
     reset();
     subscribe();
 }
 
-void SMBBatteryDisplay::subscribe(){
+void SMBPowerPayDisplay::subscribe(){
     if(!isEnabled())
         return;
     
@@ -91,7 +91,7 @@ void SMBBatteryDisplay::subscribe(){
 
     try
     {
-        battery_subscriber_ = update_nh_.subscribe(topic_name, 1, &SMBBatteryDisplay::batteryMsgCallback, this);
+        battery_subscriber_ = update_nh_.subscribe(topic_name, 1, &SMBPowerPayDisplay::batteryMsgCallback, this);
         setStatus(StatusProperty::Ok, "Battery", "OK");
     }
     catch (ros::Exception& e)
@@ -100,15 +100,15 @@ void SMBBatteryDisplay::subscribe(){
     }
 }
 
-void SMBBatteryDisplay::unsubscribe(){
+void SMBPowerPayDisplay::unsubscribe(){
     battery_subscriber_.shutdown();
 }
 
-void SMBBatteryDisplay::batteryMsgCallback(const smb_powerstatus::SMBPowerStatusConstPtr &msg){
+void SMBPowerPayDisplay::batteryMsgCallback(const smb_powerstatus::SMBPowerStatusConstPtr &msg){
 
     battery_1_panel_->setEnabled(msg->battery_1.present);
     if(!msg->battery_1.present){
-        battery_1_panel_->setBatteryStatus(BatteryPanel::BatteryStatus::Missing);
+        battery_1_panel_->setBatteryStatus(BatteryPayPanel::BatteryStatus::Missing);
     }else{
         battery_1_panel_->setPercentage(msg->battery_1.percentage);
         battery_1_panel_->setVoltage(msg->battery_1.voltage);
@@ -116,27 +116,27 @@ void SMBBatteryDisplay::batteryMsgCallback(const smb_powerstatus::SMBPowerStatus
         {
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_CHARGING:
                 battery_1_panel_->setBatteryStatus(
-                    BatteryPanel::BatteryStatus::Charging);
+                    BatteryPayPanel::BatteryStatus::Charging);
                 break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_DISCHARGING:
                 battery_1_panel_->setBatteryStatus(
-                    BatteryPanel::BatteryStatus::Discharging);
+                    BatteryPayPanel::BatteryStatus::Discharging);
                 break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_FULL:
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_NOT_CHARGING:
                 battery_1_panel_->setBatteryStatus(
-                    BatteryPanel::BatteryStatus::NotCharging);
+                    BatteryPayPanel::BatteryStatus::NotCharging);
                 break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_UNKNOWN:
                 battery_1_panel_->setBatteryStatus(
-                    BatteryPanel::BatteryStatus::Unknown);
+                    BatteryPayPanel::BatteryStatus::Unknown);
                 break;
         }
     }
 
     battery_2_panel_->setEnabled(msg->battery_2.present);
     if(!msg->battery_2.present){
-        battery_2_panel_->setBatteryStatus(BatteryPanel::BatteryStatus::Missing);
+        battery_2_panel_->setBatteryStatus(BatteryPayPanel::BatteryStatus::Missing);
     }else{
         battery_2_panel_->setPercentage(msg->battery_2.percentage);
         battery_2_panel_->setVoltage(msg->battery_2.voltage);
@@ -144,20 +144,20 @@ void SMBBatteryDisplay::batteryMsgCallback(const smb_powerstatus::SMBPowerStatus
         {
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_CHARGING:
                 battery_2_panel_->setBatteryStatus(
-                    BatteryPanel::BatteryStatus::Charging);
+                    BatteryPayPanel::BatteryStatus::Charging);
                 break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_DISCHARGING:
                 battery_2_panel_->setBatteryStatus(
-                    BatteryPanel::BatteryStatus::Discharging);
+                    BatteryPayPanel::BatteryStatus::Discharging);
                 break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_FULL:
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_NOT_CHARGING:
                 battery_2_panel_->setBatteryStatus(
-                    BatteryPanel::BatteryStatus::NotCharging);
+                    BatteryPayPanel::BatteryStatus::NotCharging);
                 break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_UNKNOWN:
                 battery_2_panel_->setBatteryStatus(
-                    BatteryPanel::BatteryStatus::Unknown);
+                    BatteryPayPanel::BatteryStatus::Unknown);
                 break;
         }
     }
@@ -176,4 +176,4 @@ void SMBBatteryDisplay::batteryMsgCallback(const smb_powerstatus::SMBPowerStatus
 
 }
 
-PLUGINLIB_EXPORT_CLASS(smb_rviz_plugins::SMBBatteryDisplay, rviz::Display)
+PLUGINLIB_EXPORT_CLASS(smb_rviz_plugins::SMBPowerPayDisplay, rviz::Display)

@@ -1,5 +1,5 @@
-#ifndef SMB_PLUG_PANEL_HPP__
-#define SMB_PLUG_PANEL_HPP__
+#ifndef SMB_PLUG_PAYLOAD_PANEL_HPP__
+#define SMB_PLUG_PAYLOAD_PANEL_HPP__
 
 #include <QWidget>
 #include <QLabel>

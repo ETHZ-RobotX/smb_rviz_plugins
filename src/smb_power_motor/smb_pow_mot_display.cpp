@@ -1,29 +1,29 @@
-#include "smb_battery_motor/smb_batt_mot_display.hpp"
+#include "smb_power_motor/smb_pow_mot_display.hpp"
 #include <pluginlib/class_list_macros.h>
 #include <QHBoxLayout>
 
 namespace smb_rviz_plugins {
 using namespace rviz;
 
-SMBBattMotDisplay::SMBBattMotDisplay(){
+SMBPowerMotDisplay::SMBPowerMotDisplay(){
 
-    battery_topic_ = new rviz::RosTopicProperty("Topic Battery", "",
+    battery_topic_ = new rviz::RosTopicProperty("Topic Power Motor", "",
                                             QString::fromStdString(ros::message_traits::datatype<sensor_msgs::BatteryState>()),
                                             "sensor_msgs::BatteryState topic to subscribe to.",
                                             this, SLOT(updateTopic()));
 }
 
-void SMBBattMotDisplay::setTopic(const QString& topic, const QString& datatype){
+void SMBPowerMotDisplay::setTopic(const QString& topic, const QString& datatype){
     battery_topic_->setString(topic);
 }
 
-void SMBBattMotDisplay::onInitialize(){
+void SMBPowerMotDisplay::onInitialize(){
     // Create widget to add to rviz
     QWidget * parent = new QWidget;
     auto layout = new QHBoxLayout;
     
     // Add 3 battery widgets for the 3 batteries
-    battery_panel_ = new BatteryPanel("Motor Battery");
+    battery_panel_ = new BatteryMotPanel("Motor Battery");
     
     // Add to the layout
     layout->addWidget(battery_panel_);
@@ -33,21 +33,21 @@ void SMBBattMotDisplay::onInitialize(){
 
 }
 
-void SMBBattMotDisplay::onEnable(){
+void SMBPowerMotDisplay::onEnable(){
     subscribe();
 }
 
-void SMBBattMotDisplay::onDisable(){
+void SMBPowerMotDisplay::onDisable(){
     unsubscribe();
 }
 
-void SMBBattMotDisplay::updateTopic(){
+void SMBPowerMotDisplay::updateTopic(){
     unsubscribe();
     reset();
     subscribe();
 }
 
-void SMBBattMotDisplay::subscribe(){
+void SMBPowerMotDisplay::subscribe(){
     if(!isEnabled())
         return;
     
@@ -67,7 +67,7 @@ void SMBBattMotDisplay::subscribe(){
 
     try
     {
-        battery_subscriber_ = update_nh_.subscribe(topic_name, 1, &SMBBattMotDisplay::batteryMsgCallback, this);
+        battery_subscriber_ = update_nh_.subscribe(topic_name, 1, &SMBPowerMotDisplay::batteryMsgCallback, this);
         setStatus(StatusProperty::Ok, "Battery", "OK");
     }
     catch (ros::Exception& e)
@@ -76,31 +76,31 @@ void SMBBattMotDisplay::subscribe(){
     }
 }
 
-void SMBBattMotDisplay::unsubscribe(){
+void SMBPowerMotDisplay::unsubscribe(){
     battery_subscriber_.shutdown();
 }
 
-void SMBBattMotDisplay::batteryMsgCallback(const sensor_msgs::BatteryStateConstPtr &msg){
+void SMBPowerMotDisplay::batteryMsgCallback(const sensor_msgs::BatteryStateConstPtr &msg){
     battery_panel_->setPercentage(msg->percentage);
     battery_panel_->setVoltage(msg->voltage);
     if(!msg->present){
-        battery_panel_->setBatteryStatus(BatteryPanel::BatteryStatus::Missing);
+        battery_panel_->setBatteryStatus(BatteryMotPanel::BatteryStatus::Missing);
     }else{
         switch (msg->power_supply_status)
         {
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_CHARGING:
                 battery_panel_->setBatteryStatus(
-                    BatteryPanel::BatteryStatus::Charging);
+                    BatteryMotPanel::BatteryStatus::Charging);
                 break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_DISCHARGING:
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_FULL:
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_NOT_CHARGING:
                 battery_panel_->setBatteryStatus(
-                    BatteryPanel::BatteryStatus::Discharging);
+                    BatteryMotPanel::BatteryStatus::Discharging);
                 break;
             case sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_UNKNOWN:
                 battery_panel_->setBatteryStatus(
-                    BatteryPanel::BatteryStatus::Unknown);
+                    BatteryMotPanel::BatteryStatus::Unknown);
                 break;
         }
     }
@@ -110,4 +110,4 @@ void SMBBattMotDisplay::batteryMsgCallback(const sensor_msgs::BatteryStateConstP
 
 }
 
-PLUGINLIB_EXPORT_CLASS(smb_rviz_plugins::SMBBattMotDisplay, rviz::Display)
+PLUGINLIB_EXPORT_CLASS(smb_rviz_plugins::SMBPowerMotDisplay, rviz::Display)

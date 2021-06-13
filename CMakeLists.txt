@@ -37,19 +37,27 @@ include_directories(
 )
 
 set(SRC_FILES
-  src/smb_battery_motor/smb_batt_mot_display.cpp
-  src/smb_battery_payload/smb_batt_pay_display.cpp
-  src/smb_battery_payload/smb_batt_panel.cpp
+  # Motor power
+  src/smb_power_motor/smb_pow_mot_display.cpp
+  src/smb_power_motor/smb_batt_mot_panel.cpp
+  # Payload power
+  src/smb_power_payload/smb_batt_pay_panel.cpp
+  src/smb_power_payload/smb_plug_pay_panel.cpp
+  src/smb_power_payload/smb_pow_pay_display.cpp
+  # Control
   src/smb_control/smb_control_panel.cpp
-  src/smb_battery_payload/smb_plug_pay_panel.cpp
 )
 
 set(HDR_FILES
-  include/smb_battery_motor/smb_batt_mot_display.hpp
-  include/smb_battery_payload/smb_batt_pay_display.hpp
-  include/smb_battery_payload/smb_batt_panel.hpp
+  # Motor power 
+  include/smb_power_motor/smb_pow_mot_display.hpp
+  include/smb_power_motor/smb_batt_mot_panel.hpp
+  # Payload power
+  include/smb_power_payload/smb_batt_pay_panel.hpp
+  include/smb_power_payload/smb_plug_pay_panel.hpp
+  include/smb_power_payload/smb_pow_pay_display.hpp
+  # Control
   include/smb_control/smb_control_panel.hpp
-  include/smb_battery_payload/smb_plug_pay_panel.hpp
 )
 
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)

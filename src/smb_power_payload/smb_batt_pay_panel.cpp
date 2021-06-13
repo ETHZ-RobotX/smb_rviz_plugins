@@ -1,4 +1,4 @@
-#include <smb_battery_payload/smb_batt_panel.hpp>
+#include <smb_power_payload/smb_batt_pay_panel.hpp>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPainter>
@@ -6,8 +6,7 @@
 #include <iostream>
 
 namespace smb_rviz_plugins{
-
-BatteryPanel::BatteryPanel(QString name, QWidget *parent)
+BatteryPayPanel::BatteryPayPanel(QString name, QWidget *parent)
     :QWidget(parent){
 
     QVBoxLayout* layout = new QVBoxLayout;
@@ -31,22 +30,22 @@ BatteryPanel::BatteryPanel(QString name, QWidget *parent)
     setLayout(layout);
 }
 
-void BatteryPanel::setBatteryStatus(BatteryPanel::BatteryStatus status){
+void BatteryPayPanel::setBatteryStatus(BatteryPayPanel::BatteryStatus status){
     battery_status_ = status;
     updateWidgets();
 }
 
-void BatteryPanel::setPercentage(double percentage){
+void BatteryPayPanel::setPercentage(double percentage){
     percentage_ = percentage;
     updateWidgets();
 }
 
-void BatteryPanel::setVoltage(double voltage){
+void BatteryPayPanel::setVoltage(double voltage){
     voltage_ = voltage;
     updateWidgets();
 }
 
-void BatteryPanel::setIcon(const QString &path){
+void BatteryPayPanel::setIcon(const QString &path){
     QPixmap pixmap(path);
     const auto& font_metrics = battery_icon_->fontMetrics();
     auto icon_width = font_metrics.averageCharWidth() * 6;
@@ -54,7 +53,7 @@ void BatteryPanel::setIcon(const QString &path){
     battery_icon_->setPixmap(pixmap.scaled(icon_width, icon_height, Qt::KeepAspectRatio));
 }
 
-void BatteryPanel::setInUse(BatteryUsage usage){
+void BatteryPayPanel::setInUse(BatteryUsage usage){
     auto pixmap = battery_icon_->pixmap()->toImage();
     QPainter painter(&pixmap);
     QPen pen;
@@ -72,7 +71,7 @@ void BatteryPanel::setInUse(BatteryUsage usage){
     battery_icon_->setPixmap(QPixmap::fromImage(pixmap));
 }
 
-void BatteryPanel::updateWidgets(){
+void BatteryPayPanel::updateWidgets(){
     double percentage = percentage_ * 100;
     BatteryUsage battery_usage = BatteryUsage::notInUse;
     battery_text_->setText(QString("%1% (%2 V)").arg(QString::number(percentage, 'f', 2)).arg(QString::number(voltage_, 'f', 2)));

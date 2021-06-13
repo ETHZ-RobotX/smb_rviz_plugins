@@ -9,15 +9,15 @@
 #include <rviz/properties/ros_topic_property.h>
 #include <sensor_msgs/BatteryState.h>
 
-#include <smb_battery_payload/smb_batt_panel.hpp>
+#include "smb_power_motor/smb_batt_mot_panel.hpp"
 
 namespace smb_rviz_plugins {
 
-class SMBBattMotDisplay : public rviz::Display {
+class SMBPowerMotDisplay : public rviz::Display {
     Q_OBJECT
     public:
 
-        SMBBattMotDisplay();
+        SMBPowerMotDisplay();
 
         void setTopic( const QString& topic, const QString& datatype ) override;
     
@@ -39,7 +39,7 @@ class SMBBattMotDisplay : public rviz::Display {
         
         ros::Subscriber battery_subscriber_;
         
-        BatteryPanel* battery_panel_{nullptr};
+        BatteryMotPanel* battery_panel_{nullptr};
 };
 
 
