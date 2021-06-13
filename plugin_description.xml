@@ -6,7 +6,7 @@
     <description>
       Display battery charge of the SMB.
     </description>
-    <message_type>smb_rviz_plugins/SMBPower</message_type>
+    <message_type>smb_powerstatus/SMBPowerStatus</message_type>
   </class>
   <class name="smb_rviz_plugins/SMBControl"
          type="smb_rviz_plugins::SMBControlPanel"

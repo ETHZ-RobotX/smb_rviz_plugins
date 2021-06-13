@@ -15,14 +15,14 @@
 
   <build_depend>qtbase5-dev</build_depend>
   <build_depend>rviz</build_depend>
-  <build_depend>message_generation</build_depend>
+  <build_depend>smb_powerstatus</build_depend>
 
 
   <exec_depend>libqt5-core</exec_depend>
   <exec_depend>libqt5-gui</exec_depend>
   <exec_depend>libqt5-widgets</exec_depend>
   <exec_depend>rviz</exec_depend>
-  <exec_depend>message_runtime</exec_depend>
+  <exec_depend>smb_powerstatus</exec_depend>
 
   <export>
       <rviz plugin="${prefix}/plugin_description.xml"/>

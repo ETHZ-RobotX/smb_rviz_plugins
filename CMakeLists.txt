@@ -4,12 +4,12 @@ find_package(catkin REQUIRED COMPONENTS
   rviz 
   sensor_msgs 
   std_msgs
-  message_generation
   roscpp
   rospy
+  smb_powerstatus
 )
 
-link_directories( ${catkin_LIBRARY_DIRS})
+link_directories(${catkin_LIBRARY_DIRS} )
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -26,20 +26,9 @@ endif()
 
 add_definitions(-DQT_NO_KEYWORDS)
 
-# Messages
-add_message_files(
-  FILES
-  SMBPower.msg
-)
-
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-  sensor_msgs
-)
 
 catkin_package(
-  CATKIN_DEPENDS message_runtime
+  CATKIN_DEPENDS
 )
 
 include_directories(

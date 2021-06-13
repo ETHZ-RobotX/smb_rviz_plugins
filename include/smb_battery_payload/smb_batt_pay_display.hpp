@@ -7,7 +7,7 @@
 #include <rviz/properties/bool_property.h>
 #include <rviz/properties/property.h>
 #include <rviz/properties/ros_topic_property.h>
-#include <smb_rviz_plugins/SMBPower.h>
+#include <smb_powerstatus/SMBPowerStatus.h>
 
 #include <smb_battery_payload/smb_batt_panel.hpp>
 #include "smb_battery_payload/smb_plug_pay_panel.hpp"
@@ -36,7 +36,7 @@ class SMBBatteryDisplay : public rviz::Display {
     private:
         void subscribe();
         void unsubscribe();
-        void batteryMsgCallback(const smb_rviz_plugins::SMBPowerConstPtr &msg);
+        void batteryMsgCallback(const smb_powerstatus::SMBPowerStatusConstPtr &msg);
 
         rviz::RosTopicProperty* battery_topic_;
 
