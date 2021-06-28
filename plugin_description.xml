@@ -8,6 +8,7 @@
     </description>
     <message_type>smb_powerstatus/SMBPowerStatus</message_type>
   </class>
+  <!-- Remove SMBControl for now
   <class name="smb_rviz_plugins/SMBControl"
          type="smb_rviz_plugins::SMBControlPanel"
          base_class_type="rviz::Panel">
@@ -15,6 +16,7 @@
       Control the SMB.
     </description>
   </class>
+  -->
   <class name="smb_rviz_plugins/SMBPowerMotor"
          type="smb_rviz_plugins::SMBPowerMotDisplay"
          base_class_type="rviz::Display">
