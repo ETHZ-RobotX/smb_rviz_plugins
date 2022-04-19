@@ -1,4 +1,4 @@
-name: smb_rviz_plugins Action
+name: build
 on:
   schedule:
     - cron: "0 1 * * 1"
