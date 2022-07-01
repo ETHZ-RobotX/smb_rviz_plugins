@@ -1,3 +1,4 @@
+[![Build](https://github.com/ETHZ-RobotX/smb_rviz_plugins/workflows/build/badge.svg)](https://github.com/ETHZ-RobotX/smb_rviz_plugins/actions/workflows/build.yml)
 # SMB RVIZ PLUGINS
 SMB rviz plugins
 
